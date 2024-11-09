@@ -1,7 +1,7 @@
 
 from tkinter import *
 from functools import partial
-from pgn_fen import *
+from pgn_fen_chess_pgn import *
 
 
 def traduce(idioma, pieza):

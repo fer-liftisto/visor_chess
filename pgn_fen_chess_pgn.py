@@ -40,12 +40,13 @@ def tabla_de_tableros(posicion):
 
 
 
-with open('lichess_pgn_2024.10.30_LIFTISTO_vs_israel_ima.6sfvWFd7 (1).pgn','r') as pgn:
+with open('lichess_pgn_2024.10.30_LIFTISTO_vs_israel_ima.6sfvWFd7.pgn','r') as pgn:
 
     first_game = chess.pgn.read_game(pgn)
 
 
 # Iterate through all moves and play them on a board.
+# Repita todos los movimientos y reprodúzcalos en un tablero.
 board = first_game.board()
 
 for move in first_game.mainline_moves():
