@@ -34,29 +34,37 @@ def tabla_de_tableros(posicion):
             #  [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
             #  ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
             #  ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']]
-        fotograma.append(fila_tablero)
-        
+        fotograma.append(fila_tablero)        
     return fotograma
 
 
+def descarga_partida(archivo):
+    '''Lee el archivo y crea las posiciones''' 
+    with open(archivo,'r',encoding="utf-8") as pgn:
+        primer_juego = chess.pgn.read_game(pgn)
+        _ = chess.Board()
+        # Iterate through all moves and play them on a board.
+        # Repita todos los movimientos y reprodúzcalos en un tablero.
+        board = primer_juego.board()
+        list_movi=['inicio']
+        list_fen = [board.fen()]
+        for move in primer_juego.mainline_moves():
+            mobo=board.san(move)
+            board.push(move)
+            posicion=board.fen()
+            list_movi.append(mobo)
+            list_fen.append(posicion)
 
-with open('lichess_pgn_2024.10.30_LIFTISTO_vs_israel_ima.6sfvWFd7.pgn','r') as pgn:
-
-    first_game = chess.pgn.read_game(pgn)
-
-
-# Iterate through all moves and play them on a board.
-# Repita todos los movimientos y reprodúzcalos en un tablero.
-board = first_game.board()
-
-for move in first_game.mainline_moves():
-    board.push(move)
-    posicion=board.fen()
-    tablero = tabla_de_tableros(posicion)
+        return list_movi, list_fen
 
 if __name__ == '__main__':
-    
-    for jugada in tablero:
+    notaciones_algebraicas, posiciones_fen= descarga_partida(
+        'lichess_pgn_2024.10.30_LIFTISTO_vs_israel_ima.6sfvWFd7.pgn')   
+    partida = zip(notaciones_algebraicas, posiciones_fen)
+    for jugada, posicion_fen in partida:
+        tablero= tabla_de_tableros(posicion_fen)
         print(jugada)
-        
-    input()
+        print(posicion_fen)
+        for fila in tablero:
+            print(fila)
+        input()
